@@ -1,0 +1,8 @@
+Writing Fast Tests Against Enterprise Rails 60min
+Overdoing it in Python 45min
+Lua for the Masses 30min
+Ruby Errors from Mismatched Gem Versions 45min
+Communicating Over Distance 60min
+Woah 30min
+Pair Programming vs Noise 45min
+User Interface CSS in Rails Apps 30min

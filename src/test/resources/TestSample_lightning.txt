@@ -1,0 +1,19 @@
+Writing Fast Tests Against Enterprise Rails 12l
+Overdoing it in Python 9l
+Lua for the Masses 6l
+Ruby Errors from Mismatched Gem Versions 9l
+Common Ruby Errors 9l
+Rails for Python Developers lightning
+Communicating Over Distance 12l
+Accounting-Driven Development 9l
+Woah 6l
+Sit Down and Write 6l
+Pair Programming vs Noise 9l
+Rails Magic 12l
+Ruby on Rails: Why We Should Move On 12l
+Clojure Ate Scala (on my project) 9l
+Programming in the Boondocks of Seattle 6l
+Ruby vs. Clojure for Back-End Development 6l
+Ruby on Rails Legacy App Maintenance 12l
+A World Without HackerNews 6l
+User Interface CSS in Rails Apps 6l
