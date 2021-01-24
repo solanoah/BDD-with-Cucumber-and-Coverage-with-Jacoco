@@ -73,5 +73,3 @@ Navigate to /target/site/cucumber-reports/feature-overview.html
 
 ## TO DO
 * Generate javadoc
-* Implement proper logging 
-
