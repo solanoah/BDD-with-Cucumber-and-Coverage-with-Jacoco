@@ -53,7 +53,7 @@ public class PlanningService {
     private void createRequiredTrack() {
 
         // Find the total estimated track.
-        boolean hasNotTimedTalks = this.talks.stream().filter(t -> t.getTalkType() == TalkType.NOT_TIMED).findAny().isPresent();
+        boolean hasNotTimedTalks = this.talks.stream().anyMatch(t -> t.getTalkType() == TalkType.NOT_TIMED);
         float totalProposedTime = this.talks.stream().map(Talk::getDuration).reduce(hasNotTimedTalks ? 1 :0, (a, b) -> a + b);
 
         int requiredTrack = (int) Math.ceil(totalProposedTime / Config.MAX_TRACK_DURATION);
@@ -86,7 +86,7 @@ public class PlanningService {
     private void scheduleTalkWithNoDuration() {
 
         // check if there is any "not time" talks
-        boolean anyWithoutDuration = this.talks.stream().filter(t -> t.isAssigned() && t.getTalkType() == TalkType.NOT_TIMED).findAny().isPresent();
+        boolean anyWithoutDuration = this.talks.stream().anyMatch(t -> t.isAssigned() && t.getTalkType() == TalkType.NOT_TIMED);
 
         // Look for tracks that are not yet full
         this.tracks.stream().filter((Track track) -> !track.isFull()).forEach(currentTrack -> {

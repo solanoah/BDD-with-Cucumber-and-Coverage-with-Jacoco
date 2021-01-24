@@ -34,7 +34,7 @@ public class Track {
      */
     public boolean isFull()
     {
-        return !Arrays.stream(this.sessions).filter(session -> !session.isFull()).findAny().isPresent();
+        return Arrays.stream(this.sessions).allMatch(Session::isFull);
     }
 
     public void updateNetworkEventStartTime(Date networkStartTime) {
