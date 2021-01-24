@@ -40,7 +40,7 @@ public class PlanningService {
      */
     public void addTalk(Talk talk) throws IllegalArgumentException {
 
-        if (talk.getDuration() > Config.MAX_SESSION_DURATION | Math.signum(talk.getDuration()) == -1) {
+        if (talk.getDuration() > Config.MAX_SESSION_DURATION || Math.signum(talk.getDuration()) == -1) {
             throw new IllegalArgumentException();
         }
 
@@ -86,7 +86,7 @@ public class PlanningService {
     private void scheduleTalkWithNoDuration() {
 
         // check if there is any "not time" talks
-        boolean anyWithoutDuration = this.talks.stream().filter(t -> t.isAssigned() & t.getTalkType() == TalkType.NOT_TIMED).findAny().isPresent();
+        boolean anyWithoutDuration = this.talks.stream().filter(t -> t.isAssigned() && t.getTalkType() == TalkType.NOT_TIMED).findAny().isPresent();
 
         // Look for tracks that are not yet full
         this.tracks.stream().filter((Track track) -> !track.isFull()).forEach(currentTrack -> {
@@ -102,7 +102,7 @@ public class PlanningService {
 
             // if there is any not-timed talk, assign those and the networking event start time remains as default of 5pm
             if (anyWithoutDuration) {
-                this.talks.stream().filter(t -> t.isAssigned() & t.getTalkType() == TalkType.NOT_TIMED).forEach(currentTalk -> {
+                this.talks.stream().filter(t -> t.isAssigned() && t.getTalkType() == TalkType.NOT_TIMED).forEach(currentTalk -> {
                     currentTalk.setStartTime(startTime);
                     currentTalk.setAssigned();
                     currentTrack.getEvents().add(currentTalk);
@@ -125,7 +125,7 @@ public class PlanningService {
             Arrays.stream(currentTrack.getSessions()).forEach(session -> {
 
                 // Assign all timed talks
-                talks.stream().filter(t -> t.isAssigned() & t.getTalkType() == TalkType.TIMED).sorted(COMPARATOR_DURATION).forEach(currentTalk -> {
+                talks.stream().filter(t -> t.isAssigned() && t.getTalkType() == TalkType.TIMED).sorted(COMPARATOR_DURATION).forEach(currentTalk -> {
 
                     int talkTime = currentTalk.getDuration();
                     int pos = (int) (session.getMaxDuration() - talkTime - session.getTotalScheduledTime());
