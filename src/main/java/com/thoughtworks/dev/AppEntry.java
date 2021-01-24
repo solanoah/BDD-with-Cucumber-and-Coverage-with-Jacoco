@@ -17,7 +17,7 @@ import static com.thoughtworks.dev.util.Config.COMPARATOR_START_TIME;
 @Slf4j
 public class AppEntry
 {
-    private static PlanningService s_planningService = new PlanningService();
+    private static PlanningService planningService = new PlanningService();
 
     /**
      * @param args supplied file path
@@ -43,16 +43,16 @@ public class AppEntry
         for (String line; (line = reader.readLine()) != null; ) {
             line = line.trim();
             try {
-                AppEntry.s_planningService.processInputLine(line);
+                AppEntry.planningService.processInputLine(line);
             } catch (IllegalArgumentException e) {
 
                 log.error("IllegalArgumentException");
             }
         }
 
-        AppEntry.s_planningService.scheduleConference();
+        AppEntry.planningService.scheduleConference();
 
-        ArrayList<Track> tracks = AppEntry.s_planningService.getTracks();
+        ArrayList<Track> tracks = AppEntry.planningService.getTracks();
 
         tracks.forEach(track -> {
             log.info(track.toString());
@@ -68,7 +68,7 @@ public class AppEntry
      * @param planningService planning service
      */
     static void setPlanner(PlanningService planningService) {
-        AppEntry.s_planningService = planningService;
+        AppEntry.planningService = planningService;
     }
 
     /**

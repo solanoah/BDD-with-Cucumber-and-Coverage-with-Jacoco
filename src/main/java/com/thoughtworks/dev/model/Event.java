@@ -55,7 +55,7 @@ public class Event {
      * @return Duration in minute
      */
     public int getDuration() {
-        return this.durationUnit == DurationUnit.Minutes ? this.duration : 5 *  this.duration;
+        return this.durationUnit == DurationUnit.MINUTES ? this.duration : 5 *  this.duration;
     }
 
     /**

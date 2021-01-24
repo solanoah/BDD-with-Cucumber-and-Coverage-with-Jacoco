@@ -3,8 +3,8 @@ package com.thoughtworks.dev.enums;
 
 public enum DurationUnit {
 
-    Minutes("min"),
-    lightning("l");
+    MINUTES("min"),
+    LIGHTNING("l");
 
     private final String value;
 

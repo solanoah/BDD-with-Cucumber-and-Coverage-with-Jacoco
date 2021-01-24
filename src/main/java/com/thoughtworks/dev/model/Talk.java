@@ -17,7 +17,7 @@ public class Talk extends Event{
      */
     public Talk(String title, int duration, DurationUnit durationUnit) {
         super(title, duration, durationUnit);
-        this.talkType = TalkType.Timed;
+        this.talkType = TalkType.TIMED;
     }
 
     /**
@@ -26,7 +26,7 @@ public class Talk extends Event{
      */
     public Talk(String title) {
         super(title);
-        this.talkType = TalkType.NotTimed;
+        this.talkType = TalkType.NOT_TIMED;
     }
 
     /**
@@ -55,7 +55,7 @@ public class Talk extends Event{
     @Override
     public String toString() {
 
-        if (this.talkType == TalkType.Timed) {
+        if (this.talkType == TalkType.TIMED) {
             return this.getTitle() + ' ' + this.getDuration() +  this.getDurationUnit().toString();
         }else{
             return this.getTitle();

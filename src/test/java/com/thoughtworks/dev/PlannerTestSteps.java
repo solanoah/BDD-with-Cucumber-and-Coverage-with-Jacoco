@@ -69,7 +69,7 @@ public class PlannerTestSteps {
     @Given("^'(.+)' -(\\d+)min$")
     public void talk_Title_With_Negative_Duration(String title, int duration) {
         try {
-            planningService.processInputLine(title + ' ' + -duration + DurationUnit.Minutes);
+            planningService.processInputLine(title + ' ' + -duration + DurationUnit.MINUTES);
         } catch (IllegalArgumentException e) {
             exceptionCount++;
         }
@@ -89,8 +89,8 @@ public class PlannerTestSteps {
         planningService.scheduleConference();
 
         assertThat("The talks created should be " + talkCount, planningService.getTalks().stream().count(), is(equalTo(talkCount)));
-        assertThat("The timed talks created should be " + timedTalk, planningService.getTalks().stream().filter(talk -> talk.getTalkType() == TalkType.Timed).count(), is(equalTo(timedTalk)));
-        assertThat("The not timed talks created should be " + notTimedTalk, planningService.getTalks().stream().filter(talk -> talk.getTalkType() == TalkType.NotTimed).count(), is(equalTo(notTimedTalk)));
+        assertThat("The timed talks created should be " + timedTalk, planningService.getTalks().stream().filter(talk -> talk.getTalkType() == TalkType.TIMED).count(), is(equalTo(timedTalk)));
+        assertThat("The not timed talks created should be " + notTimedTalk, planningService.getTalks().stream().filter(talk -> talk.getTalkType() == TalkType.NOT_TIMED).count(), is(equalTo(notTimedTalk)));
         assertThat("The tracks created should be " + expectedTracks, planningService.getTracks().size(), is(equalTo(expectedTracks)));
     }
 

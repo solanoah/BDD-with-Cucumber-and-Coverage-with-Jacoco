@@ -53,7 +53,7 @@ public class PlanningService {
     private void createRequiredTrack() {
 
         // Find the total estimated track.
-        boolean hasNotTimedTalks = this.talks.stream().filter(t -> t.getTalkType() == TalkType.NotTimed).findAny().isPresent();
+        boolean hasNotTimedTalks = this.talks.stream().filter(t -> t.getTalkType() == TalkType.NOT_TIMED).findAny().isPresent();
         float totalProposedTime = this.talks.stream().map(Talk::getDuration).reduce(hasNotTimedTalks ? 1 :0, (a, b) -> a + b);
 
         int requiredTrack = (int) Math.ceil(totalProposedTime / Config.MAX_TRACK_DURATION);
@@ -86,7 +86,7 @@ public class PlanningService {
     private void scheduleTalkWithNoDuration() {
 
         // check if there is any "not time" talks
-        boolean anyWithoutDuration = this.talks.stream().filter(t -> t.isAssigned() & t.getTalkType() == TalkType.NotTimed).findAny().isPresent();
+        boolean anyWithoutDuration = this.talks.stream().filter(t -> t.isAssigned() & t.getTalkType() == TalkType.NOT_TIMED).findAny().isPresent();
 
         // Look for tracks that are not yet full
         this.tracks.stream().filter((Track track) -> !track.isFull()).forEach(currentTrack -> {
@@ -102,7 +102,7 @@ public class PlanningService {
 
             // if there is any not-timed talk, assign those and the networking event start time remains as default of 5pm
             if (anyWithoutDuration) {
-                this.talks.stream().filter(t -> t.isAssigned() & t.getTalkType() == TalkType.NotTimed).forEach(currentTalk -> {
+                this.talks.stream().filter(t -> t.isAssigned() & t.getTalkType() == TalkType.NOT_TIMED).forEach(currentTalk -> {
                     currentTalk.setStartTime(startTime);
                     currentTalk.setAssigned();
                     currentTrack.getEvents().add(currentTalk);
@@ -125,15 +125,15 @@ public class PlanningService {
             Arrays.stream(currentTrack.getSessions()).forEach(session -> {
 
                 // Assign all timed talks
-                talks.stream().filter(t -> t.isAssigned() & t.getTalkType() == TalkType.Timed).sorted(COMPARATOR_DURATION).forEach(currentTalk -> {
+                talks.stream().filter(t -> t.isAssigned() & t.getTalkType() == TalkType.TIMED).sorted(COMPARATOR_DURATION).forEach(currentTalk -> {
 
                     int talkTime = currentTalk.getDuration();
                     int pos = (int) (session.getMaxDuration() - talkTime - session.getTotalScheduledTime());
 
-                    Talk lowest = talks.parallelStream().filter(t -> t.isAssigned() && t.getTalkType() == TalkType.Timed)
+                    Talk lowest = talks.parallelStream().filter(t -> t.isAssigned() && t.getTalkType() == TalkType.TIMED)
                             .min((t1, t2) -> Integer.compare(t1.getDuration(), t2.getDuration())).get();
 
-                    long remainingTalks = talks.parallelStream().filter(t -> t.isAssigned() && t.getTalkType() == TalkType.Timed).count();
+                    long remainingTalks = talks.parallelStream().filter(t -> t.isAssigned() && t.getTalkType() == TalkType.TIMED).count();
 
                     // ensure that any time left in a session can accommodate talk with smallest duration
                     if (pos >= lowest.getDuration() || pos == 0 || (remainingTalks == 1 && pos < lowest.getDuration() )) {
@@ -170,7 +170,7 @@ public class PlanningService {
         if (match.find()) {
             String title = match.group(1);
             String durationInString = match.group(2);
-            DurationUnit durationUnit = match.group(3).equalsIgnoreCase("min") ? DurationUnit.Minutes : DurationUnit.lightning;
+            DurationUnit durationUnit = match.group(3).equalsIgnoreCase("min") ? DurationUnit.MINUTES : DurationUnit.LIGHTNING;
             int duration = Integer.parseInt(durationInString);
             addTalk(new Talk(title, duration, durationUnit));
         } else {

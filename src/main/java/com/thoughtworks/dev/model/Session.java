@@ -20,7 +20,7 @@ public class Session {
 
         this.sessionType = sessionType;
 
-        if (sessionType == SessionType.Morning)
+        if (sessionType == SessionType.MORNING)
             this.startHour = Config.MORNING_SESSION_START_HOUR;
         else
             this.startHour = Config.AFTERNOON_SESSION_START_HOUR;
@@ -39,7 +39,7 @@ public class Session {
      */
     public boolean isFull()
     {
-        if (sessionType == SessionType.Morning) {
+        if (sessionType == SessionType.MORNING) {
             return totalScheduledTime == Config.MORNING_SESSION_DURATION;
         }
         else {
@@ -68,7 +68,7 @@ public class Session {
      */
     public float getMaxDuration() {
 
-        if (sessionType == SessionType.Morning)
+        if (sessionType == SessionType.MORNING)
             return Config.MORNING_SESSION_DURATION;
         else
             return Config.AFTERNOON_SESSION_DURATION;

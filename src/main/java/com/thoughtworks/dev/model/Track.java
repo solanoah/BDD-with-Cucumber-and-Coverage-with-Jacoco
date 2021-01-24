@@ -24,7 +24,7 @@ public class Track {
      */
     public Track(int id) {
         this.id = id;
-        this.sessions = new Session[]{ new Session(SessionType.Morning), new Session(SessionType.Afternoon)};
+        this.sessions = new Session[]{ new Session(SessionType.MORNING), new Session(SessionType.AFTERNOON)};
         this.networkEventStartTime = DateHelper.createTime(Config.DEFAULT_NETWORK_START_HOUR);
         this.lunchStartTime = DateHelper.createTime(Config.DEFAULT_LUNCH_START_HOUR);
     }
