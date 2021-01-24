@@ -4,7 +4,7 @@ import com.thoughtworks.dev.enums.DurationUnit;
 import com.thoughtworks.dev.enums.SessionType;
 import com.thoughtworks.dev.enums.TalkType;
 
-public class Talk extends Event{
+public class Talk extends Event {
 
     private final TalkType talkType;
     private boolean assigned;
@@ -22,7 +22,6 @@ public class Talk extends Event{
 
     /**
      * @param title
-     *
      */
     public Talk(String title) {
         super(title);
@@ -37,6 +36,7 @@ public class Talk extends Event{
     }
 
     /**
+     *
      */
     public void setAssigned() {
         this.assigned = true;
@@ -56,8 +56,8 @@ public class Talk extends Event{
     public String toString() {
 
         if (this.talkType == TalkType.TIMED) {
-            return this.getTitle() + ' ' + this.getDuration() +  this.getDurationUnit().toString();
-        }else{
+            return this.getTitle() + ' ' + this.getDuration() + this.getDurationUnit().toString();
+        } else {
             return this.getTitle();
         }
     }

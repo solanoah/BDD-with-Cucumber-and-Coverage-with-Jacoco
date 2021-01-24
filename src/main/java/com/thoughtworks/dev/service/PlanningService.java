@@ -7,35 +7,46 @@ import com.thoughtworks.dev.model.Talk;
 import com.thoughtworks.dev.model.Track;
 import com.thoughtworks.dev.util.Config;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.LinkedList;
+import java.util.*;
 import java.util.regex.Matcher;
 
 import static com.thoughtworks.dev.util.Config.COMPARATOR_DURATION;
 
 public class PlanningService {
 
-    private final LinkedList<Talk> talks = new LinkedList<>();
-    private final ArrayList<Track> tracks = new ArrayList<>(5);
+    private final List<Talk> talks = new LinkedList<>();
+    private final List<Track> tracks = new ArrayList<>(5);
+
+    /**
+     * Create event
+     *
+     * @param title     Event title
+     * @param startTime Start time
+     * @return
+     */
+    private static Event createEvent(String title, Date startTime) {
+        Event event = new Event(title);
+        event.setStartTime(startTime);
+        return event;
+    }
 
     /**
      * @return All tracks that has been generated
      */
-    public ArrayList<Track> getTracks() {
+    public List<Track> getTracks() {
         return this.tracks;
     }
 
     /**
      * @return All proposed talks
      */
-    public LinkedList<Talk> getTalks() {
+    public List<Talk> getTalks() {
         return this.talks;
     }
 
     /**
      * Add proposed talk and validate that it's not negative and duration can not exceed highest session
+     *
      * @param talk
      */
     public void addTalk(Talk talk) throws IllegalArgumentException {
@@ -54,7 +65,7 @@ public class PlanningService {
 
         // Find the total estimated track.
         boolean hasNotTimedTalks = this.talks.stream().anyMatch(t -> t.getTalkType() == TalkType.NOT_TIMED);
-        float totalProposedTime = this.talks.stream().map(Talk::getDuration).reduce(hasNotTimedTalks ? 1 :0, (a, b) -> a + b);
+        float totalProposedTime = this.talks.stream().map(Talk::getDuration).reduce(hasNotTimedTalks ? 1 : 0, Integer::sum);
 
         int requiredTrack = (int) Math.ceil(totalProposedTime / Config.MAX_TRACK_DURATION);
 
@@ -136,7 +147,7 @@ public class PlanningService {
                     long remainingTalks = talks.parallelStream().filter(t -> t.isAssigned() && t.getTalkType() == TalkType.TIMED).count();
 
                     // ensure that any time left in a session can accommodate talk with smallest duration
-                    if (pos >= lowest.getDuration() || pos == 0 || (remainingTalks == 1 && pos < lowest.getDuration() )) {
+                    if (pos >= lowest.getDuration() || pos == 0 || (remainingTalks == 1 && pos < lowest.getDuration())) {
 
                         Date talkStartTime = new Date(session.getStartTime().getTime());
                         talkStartTime.setTime(talkStartTime.getTime() + (session.getTotalScheduledTime() * 60 * 1000));
@@ -159,7 +170,7 @@ public class PlanningService {
      * @param line propose talk detail
      * @throws IllegalArgumentException
      */
-    public void processInputLine(String line) throws IllegalArgumentException  {
+    public void processInputLine(String line) throws IllegalArgumentException {
 
         if (line.length() == 0) {
             return;
@@ -176,17 +187,5 @@ public class PlanningService {
         } else {
             addTalk(new Talk(line));
         }
-    }
-
-    /**
-     * Create event
-     * @param title Event title
-     * @param startTime Start time
-     * @return
-     */
-    private static Event createEvent(String title, Date startTime) {
-        Event event = new Event(title);
-        event.setStartTime(startTime);
-        return event;
     }
 }

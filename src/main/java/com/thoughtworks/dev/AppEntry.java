@@ -10,13 +10,12 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.List;
 
 import static com.thoughtworks.dev.util.Config.COMPARATOR_START_TIME;
 
 @Slf4j
-public class AppEntry
-{
+public class AppEntry {
     private static PlanningService planningService = new PlanningService();
 
     /**
@@ -32,18 +31,17 @@ public class AppEntry
 
         BufferedReader reader;
 
-        try{
+        try {
             File inputFile = new File(args[0]);
             reader = new BufferedReader(new FileReader(inputFile));
-        }catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
             throw e;
         }
 
         for (String line; (line = reader.readLine()) != null; ) {
-            line = line.trim();
             try {
-                AppEntry.planningService.processInputLine(line);
+                AppEntry.planningService.processInputLine(line.trim());
             } catch (IllegalArgumentException e) {
 
                 log.error("IllegalArgumentException");
@@ -52,7 +50,7 @@ public class AppEntry
 
         AppEntry.planningService.scheduleConference();
 
-        ArrayList<Track> tracks = AppEntry.planningService.getTracks();
+        List<Track> tracks = AppEntry.planningService.getTracks();
 
         tracks.forEach(track -> {
             log.info(track.toString());
@@ -65,6 +63,7 @@ public class AppEntry
 
     /**
      * Method added in order to make code testable
+     *
      * @param planningService planning service
      */
     static void setPlanner(PlanningService planningService) {
@@ -74,8 +73,7 @@ public class AppEntry
     /**
      * @param events Events to be printed
      */
-    private static void printScheduledTalks(ArrayList<Event> events)
-    {
+    private static void printScheduledTalks(List<Event> events) {
         events.stream().sorted(COMPARATOR_START_TIME).forEach(talk -> log.info(DateHelper.DATE_FORMAT.format(talk.getStartTime()) + ' ' + talk.toString()));
     }
 }

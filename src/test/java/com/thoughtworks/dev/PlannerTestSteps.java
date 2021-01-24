@@ -28,20 +28,20 @@ public class PlannerTestSteps {
     private int exceptionCount = 0;
 
     @Before
-    public void setup()
-    {
+    public void setup() {
         planningService = new PlanningService();
     }
 
     /**
      * This method will process all the input, create talk object and validate the provided duration
-     * @param title Talk tile
+     *
+     * @param title    Talk tile
      * @param duration Duration
-     * @param unit Unit in minute/lightning
+     * @param unit     Unit in minute/lightning
      * @throws IllegalArgumentException Will be raised if duration is negative or more than 240
      */
     @Given("^'(.+)' (\\d+)(.+)$")
-    public void talk_Title_With_Duration(String title, int  duration, String unit) throws IllegalArgumentException {
+    public void talk_Title_With_Duration(String title, int duration, String unit) throws IllegalArgumentException {
 
         try {
             planningService.processInputLine(title + ' ' + duration + unit);
@@ -52,6 +52,7 @@ public class PlannerTestSteps {
 
     /**
      * This method will process all the input, create talk object (Talk with no duration)
+     *
      * @param line detail of the talk
      * @throws Throwable
      */
@@ -63,7 +64,8 @@ public class PlannerTestSteps {
 
     /**
      * This method will process all the input and raise an exception for Talk with negative duration)
-     * @param title Talk tile
+     *
+     * @param title    Talk tile
      * @param duration Duration
      */
     @Given("^'(.+)' -(\\d+)min$")
@@ -77,10 +79,11 @@ public class PlannerTestSteps {
 
     /**
      * THis method does the scheduling and assert that expected tracks, talk and duration have been done correctly
+     *
      * @param expectedTracks Expected number of tracks
-     * @param talkCount Total talks created
-     * @param timedTalk Total number of timed talks
-     * @param notTimedTalk Total number of NotTimed talks
+     * @param talkCount      Total talks created
+     * @param timedTalk      Total number of timed talks
+     * @param notTimedTalk   Total number of NotTimed talks
      * @throws Throwable
      */
     @When("^Schedule (\\d+) Track for proposed total (\\d+) talks, (\\d+) timed talks, (\\d+) untimed talk$")
@@ -96,21 +99,23 @@ public class PlannerTestSteps {
 
     /**
      * This method assert that the total scheduled talk time for a given track does not exceed morning limit
-     * @param trackNumber The track number
-     * @param expectedTime  The expected Allocated Time
+     *
+     * @param trackNumber  The track number
+     * @param expectedTime The expected Allocated Time
      * @throws Throwable
      */
     @Then("^Track (\\d+) should have (\\d+)mins for morning session$")
     public void track_should_have_mins_for_morning_session(int trackNumber, int expectedTime) throws Throwable {
         Track track = planningService.getTracks().get(trackNumber - 1);
         assertThat("Tha track Total Scheduled morning Time for track should be " + expectedTime, track.getSessions()[0].getTotalScheduledTime(), is(equalTo(expectedTime)));
-        assertThat("The track name should be equal",track.toString(), is(equalTo("Track " + trackNumber)));
+        assertThat("The track name should be equal", track.toString(), is(equalTo("Track " + trackNumber)));
     }
 
     /**
      * This method assert that the total scheduled talk time for a given track does not exceed afternoon limit
-     * @param trackNumber The track number
-     * @param expectedTime  The expected Allocated Time
+     *
+     * @param trackNumber  The track number
+     * @param expectedTime The expected Allocated Time
      * @throws Throwable
      */
     @Then("^Track (\\d+) should have (\\d+)mins for afternoon session$")
@@ -122,21 +127,23 @@ public class PlannerTestSteps {
 
     /**
      * This method assert that the total scheduled talk time for a given track should be less than afternoon limit
-     * @param trackNumber The track number
-     * @param expectedTime  The expected Allocated Time
+     *
+     * @param trackNumber  The track number
+     * @param expectedTime The expected Allocated Time
      * @throws Throwable
      */
     @Then("^Track (\\d+) should less than (\\d+)mins for afternoon session$")
     public void track_should_less_than_mins_for_afternoon_session(int trackNumber, int expectedTime) throws Throwable {
         Track track = planningService.getTracks().get(trackNumber - 1);
-        assertThat("Tha track Total Scheduled afternoon Time for track should be less than " + expectedTime,track.getSessions()[1].getTotalScheduledTime(), lessThan(expectedTime));
+        assertThat("Tha track Total Scheduled afternoon Time for track should be less than " + expectedTime, track.getSessions()[1].getTotalScheduledTime(), lessThan(expectedTime));
     }
 
     /**
      * Method to check that not-time talks should be added to a specific track
      * e.g. Rails_for_Python_Developers_lightning
+     *
      * @param trackNumber Track number
-     * @param talkName talk title
+     * @param talkName    talk title
      * @throws Throwable
      */
     @Then("^Track (\\d+) should have '(.+)' talk$")
@@ -148,9 +155,10 @@ public class PlannerTestSteps {
 
     /**
      * Method to test that events (lunch/Network) are created and start at the right time
+     *
      * @param trackNumber Track number
-     * @param eventName Event name - Lunch/Network
-     * @param date Event start time
+     * @param eventName   Event name - Lunch/Network
+     * @param date        Event start time
      * @throws Throwable
      */
     @Then("^Track (\\d+) (.+) should start at (.*)$")
@@ -165,10 +173,11 @@ public class PlannerTestSteps {
 
     /**
      * Method to test that timed talks are created and start at the right time
+     *
      * @param trackNumber Track number
-     * @param date talk start time
-     * @param talkTitle talk title
-     * @param minute Duration
+     * @param date        talk start time
+     * @param talkTitle   talk title
+     * @param minute      Duration
      * @throws Throwable
      */
     @And("^Track (\\d+) : (.*) '(.+)' (\\d+)min$")
@@ -184,9 +193,10 @@ public class PlannerTestSteps {
 
     /**
      * Method to test that not timed talks are created and start at the right time
+     *
      * @param trackNumber Track number
-     * @param date talk start time
-     * @param talkTitle talk title
+     * @param date        talk start time
+     * @param talkTitle   talk title
      * @throws Throwable
      */
     @And("^Track (\\d+) : (.*) '(.+)'$")
@@ -201,19 +211,21 @@ public class PlannerTestSteps {
 
     /**
      * Ascertain that the no tracks has been created when exception is raised
+     *
      * @param numberOfCreatedTrack Number of created tracks
      */
     @Then("^(\\d+) Track is created$")
-    public void  raiseException1(Integer numberOfCreatedTrack) {
-        assertThat("The total number of tracks in exception should be " +  numberOfCreatedTrack, planningService.getTracks().size(), is(equalTo(numberOfCreatedTrack)));
+    public void raiseException1(Integer numberOfCreatedTrack) {
+        assertThat("The total number of tracks in exception should be " + numberOfCreatedTrack, planningService.getTracks().size(), is(equalTo(numberOfCreatedTrack)));
     }
 
     /**
      * Check the total number of exception created
+     *
      * @param numberOfException Number of exceptions
      */
     @Then("^(\\d+) Illegal Argument Exception is raised$")
-    public void  raiseException2(Integer numberOfException) {
-        assertThat("The total number of exceptions should be " +  numberOfException, exceptionCount, is(equalTo(numberOfException)));
+    public void raiseException2(Integer numberOfException) {
+        assertThat("The total number of exceptions should be " + numberOfException, exceptionCount, is(equalTo(numberOfException)));
     }
 }

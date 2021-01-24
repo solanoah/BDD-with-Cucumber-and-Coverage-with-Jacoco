@@ -4,27 +4,23 @@ import com.thoughtworks.dev.enums.SessionType;
 import com.thoughtworks.dev.util.Config;
 import com.thoughtworks.dev.util.DateHelper;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.Objects;
+import java.util.*;
 
 public class Track {
 
     private final int id;
     private final Session[] sessions;
-    private final ArrayList<Event> events = new ArrayList<>(20);
+    private final List<Event> events = new ArrayList<>(20);
     private final Date lunchStartTime;
 
     private Date networkEventStartTime;
 
     /**
-     *
      * @param id
      */
     public Track(int id) {
         this.id = id;
-        this.sessions = new Session[]{ new Session(SessionType.MORNING), new Session(SessionType.AFTERNOON)};
+        this.sessions = new Session[]{new Session(SessionType.MORNING), new Session(SessionType.AFTERNOON)};
         this.networkEventStartTime = DateHelper.createTime(Config.DEFAULT_NETWORK_START_HOUR);
         this.lunchStartTime = DateHelper.createTime(Config.DEFAULT_LUNCH_START_HOUR);
     }
@@ -32,8 +28,7 @@ public class Track {
     /**
      * @return
      */
-    public boolean isFull()
-    {
+    public boolean isFull() {
         return Arrays.stream(this.sessions).allMatch(Session::isFull);
     }
 
@@ -43,7 +38,7 @@ public class Track {
 
         if (networkStartTime.after(early)) {
             this.networkEventStartTime = networkStartTime;
-        }else{
+        } else {
             this.networkEventStartTime = early;
         }
 
@@ -51,7 +46,7 @@ public class Track {
                 .forEach(e -> e.setStartTime(this.networkEventStartTime));
     }
 
-    public ArrayList<Event> getEvents() {
+    public List<Event> getEvents() {
         return events;
     }
 
