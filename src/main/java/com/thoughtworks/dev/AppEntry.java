@@ -1,13 +1,11 @@
 package com.thoughtworks.dev;
 
 import com.thoughtworks.dev.model.Event;
-import com.thoughtworks.dev.model.Track;
 import com.thoughtworks.dev.service.PlanningService;
 import com.thoughtworks.dev.util.DateHelper;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.List;
@@ -29,34 +27,22 @@ public class AppEntry {
             System.exit(1);
         }
 
-        BufferedReader reader;
-
-        try {
-            File inputFile = new File(args[0]);
-            reader = new BufferedReader(new FileReader(inputFile));
-        } catch (IOException e) {
-            e.printStackTrace();
-            throw e;
-        }
-
-        for (String line; (line = reader.readLine()) != null; ) {
-            try {
+        try (BufferedReader reader = new BufferedReader(new FileReader(args[0]))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                // process the line
                 AppEntry.planningService.processInputLine(line.trim());
-            } catch (IllegalArgumentException e) {
-
-                log.error("IllegalArgumentException");
             }
         }
 
         AppEntry.planningService.scheduleConference();
 
-        List<Track> tracks = AppEntry.planningService.getTracks();
-
-        tracks.forEach(track -> {
-            log.info(track.toString());
-            printScheduledTalks(track.getEvents());
-            log.info(System.getProperty("line.separator"));
-        });
+        AppEntry.planningService.getTracks()
+                .forEach(track -> {
+                    log.info(track.toString());
+                    printScheduledTalks(track.getEvents());
+                    log.info(System.getProperty("line.separator"));
+                });
 
         System.exit(0);
     }

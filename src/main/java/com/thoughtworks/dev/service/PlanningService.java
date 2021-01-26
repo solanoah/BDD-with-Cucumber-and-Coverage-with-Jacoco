@@ -168,9 +168,8 @@ public class PlanningService {
 
     /**
      * @param line propose talk detail
-     * @throws IllegalArgumentException
      */
-    public void processInputLine(String line) throws IllegalArgumentException {
+    public void processInputLine(String line){
 
         if (line.length() == 0) {
             return;
