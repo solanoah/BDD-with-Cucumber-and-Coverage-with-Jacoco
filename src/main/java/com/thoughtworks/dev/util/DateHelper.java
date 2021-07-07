@@ -13,6 +13,7 @@ public class DateHelper {
 
     /**
      * Create a Date time based on input hour
+     *
      * @param hour Hour of the day
      * @return Time for a given hour
      */

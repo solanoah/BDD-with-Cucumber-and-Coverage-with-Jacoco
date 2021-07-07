@@ -9,6 +9,9 @@ import java.util.regex.Pattern;
 
 public final class Config {
 
+    private Config() {
+    }
+
     public static final float MORNING_SESSION_DURATION = 3 * 60;
     public static final float AFTERNOON_SESSION_DURATION = 4 * 60;
 

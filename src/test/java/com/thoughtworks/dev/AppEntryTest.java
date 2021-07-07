@@ -19,13 +19,11 @@ import static org.mockito.Mockito.atLeast;
 @SuppressWarnings("All")
 public class AppEntryTest {
 
+    @Rule
+    public final ExpectedSystemExit exit = ExpectedSystemExit.none();
     private final ClassLoader classLoader = getClass().getClassLoader();
     private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
     private final ByteArrayOutputStream errContent = new ByteArrayOutputStream();
-
-    @Rule
-    public final ExpectedSystemExit exit = ExpectedSystemExit.none();
-
     @InjectMocks
     PlanningService planningService;
 
@@ -50,7 +48,7 @@ public class AppEntryTest {
 
         AppEntry.setPlanner(planningMock);
         File file = new File(classLoader.getResource("TestSample_lightning.txt").getFile());
-        AppEntry.main(new String[] { file.getAbsolutePath()});
+        AppEntry.main(new String[]{file.getAbsolutePath()});
 
         Mockito.verify(planningMock, atLeast(19)).processInputLine(any());
         Mockito.verify(planningMock).scheduleConference();
@@ -63,7 +61,7 @@ public class AppEntryTest {
         exit.expectSystemExit();
         AppEntry.setPlanner(planningService);
         File file = new File(classLoader.getResource("TestSample_lightning.txt").getFile());
-        AppEntry.main(new String[] { file.getAbsolutePath()});
+        AppEntry.main(new String[]{file.getAbsolutePath()});
 
         assertEquals("Track 1\n" +
                 "09:00AM Writing Fast Tests Against Enterprise Rails 60l\n" +
@@ -99,13 +97,13 @@ public class AppEntryTest {
     @Test
     public void testAppEntryMain_NoArg() throws IOException {
         exit.expectSystemExit();
-        AppEntry.main(new String[] { });
+        AppEntry.main(new String[]{});
     }
 
     @Test(expected = IOException.class)
     public void testAppEntryMain_InvalidFilePath() throws IOException {
         AppEntry.setPlanner(planningService);
-        AppEntry.main(new String[] { "Invalid.txt" });
+        AppEntry.main(new String[]{"Invalid.txt"});
     }
 
     @Test
@@ -113,7 +111,7 @@ public class AppEntryTest {
         exit.expectSystemExit();
         AppEntry.setPlanner(planningService);
         File file = new File(classLoader.getResource("TestSample_exception.txt").getFile());
-        AppEntry.main(new String[] { file.getAbsolutePath()});
+        AppEntry.main(new String[]{file.getAbsolutePath()});
         assertEquals("IllegalArgumentException\n" + "IllegalArgumentException\n", errContent.toString());
     }
 }

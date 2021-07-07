@@ -20,8 +20,8 @@ public class Event {
     }
 
     /**
-     * @param title Title
-     * @param duration Duration
+     * @param title        Title
+     * @param duration     Duration
      * @param durationUnit Minute/Lightning
      */
     Event(String title, int duration, DurationUnit durationUnit) {
@@ -40,7 +40,7 @@ public class Event {
     /**
      * @return The start time
      */
-    public Date getStartTime(){
+    public Date getStartTime() {
         return this.startTime;
     }
 
@@ -55,7 +55,7 @@ public class Event {
      * @return Duration in minute
      */
     public int getDuration() {
-        return this.durationUnit == DurationUnit.Minutes ? this.duration : 5 *  this.duration;
+        return this.durationUnit == DurationUnit.MINUTES ? this.duration : 5 * this.duration;
     }
 
     /**
